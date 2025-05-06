@@ -1,35 +1,86 @@
+"use client";
 import {
   UserGroupIcon,
   HomeIcon,
   DocumentDuplicateIcon,
-} from '@heroicons/react/24/outline';
+  AcademicCapIcon,
+  ClipboardDocumentCheckIcon,
+  CurrencyDollarIcon,
+  CreditCardIcon,
+  ChatBubbleLeftRightIcon,
+  ArchiveBoxIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import clsx from "clsx";
 
-// Map of links to display in the side navigation.
-// Depending on the size of the application, this would be stored in a database.
 const links = [
-  { name: 'Home', href: '/dashboard', icon: HomeIcon },
+  { name: "Tableau de bord", href: "/dashboard", icon: HomeIcon },
   {
-    name: 'Invoices',
-    href: '/dashboard/invoices',
-    icon: DocumentDuplicateIcon,
+    name: "Personnes",
+    href: "/dashboard/personnes",
+    icon: UserGroupIcon,
   },
-  { name: 'Customers', href: '/dashboard/customers', icon: UserGroupIcon },
+  {
+    name: "Cours",
+    href: "/dashboard/cours",
+    icon: AcademicCapIcon,
+  },
+  {
+    name: "Evaluations",
+    href: "/dashboard/evaluation",
+    icon: ClipboardDocumentCheckIcon,
+  },
+  {
+    name: "Présences",
+    href: "/dashboard/presence",
+    icon: ClockIcon,
+  },
+  {
+    name: "Finances",
+    href: "/dashboard/finance",
+    icon: CurrencyDollarIcon,
+  },
+  {
+    name: "Paiements",
+    href: "/dashboard/paiement",
+    icon: CreditCardIcon,
+  },
+  {
+    name: "Communications",
+    href: "/dashboard/communication",
+    icon: ChatBubbleLeftRightIcon,
+  },
+  {
+    name: "Archives",
+    href: "/dashboard/archives",
+    icon: ArchiveBoxIcon,
+  },
 ];
 
 export default function NavLinks() {
+  const pathname = usePathname();
+
   return (
     <>
       {links.map((link) => {
         const LinkIcon = link.icon;
         return (
-          <a
+          <Link
             key={link.name}
             href={link.href}
-            className="flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3"
+            className={clsx(
+              "flex h-[48px] grow items-center justify-center gap-2 rounded-sm bg-white p-3 text-sm font-medium hover:bg-kelasi-red/5 hover:text-kelasi-red md:flex-none md:justify-start md:p-2 md:px-3",
+              {
+                "bg-kelasi-red/5 text-kelasi-red border-b-2 border-kelasi-red":
+                  pathname === link.href,
+              }
+            )}
           >
             <LinkIcon className="w-6" />
             <p className="hidden md:block">{link.name}</p>
-          </a>
+          </Link>
         );
       })}
     </>
