@@ -22,7 +22,7 @@ export default function Page() {
             <a href="https://nextjs.org/learn/" className="text-kelasi-red">
               En savoir plus sur Nous!
             </a>
-            , Acceder au tableau de bord.
+            , Accéder au tableau de bord et commencer.
           </p>
           <Link
             href="/login"
