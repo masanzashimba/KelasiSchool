@@ -1,18 +1,17 @@
-import { GlobeAltIcon } from "@heroicons/react/24/outline";
-import { titillium_Web } from "@/app/ui/fonts";
+import { Titillium_Web } from "next/font/google";
+
+const titillium = Titillium_Web({
+  weight: ["700"],
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export default function KELASI() {
   return (
     <div
-      className={`${titillium_Web.className} flex flex-row items-center leading-none font-bold text-[45px] w-[209px] h-[59px]`}
-      style={{
-        background: "linear-gradient(91.74deg, #BA2138 38.29%, #2BAA97 92.61%)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-      }}
+      className={`${titillium.className} w-[119px] h-[57px] text-[39px] leading-[59px] font-bold bg-gradient-to-r from-[#BA2138] via-[#BA2138] to-[#2BAA97] text-transparent bg-clip-text`}
     >
-      <GlobeAltIcon className="h-12 w-12 rotate-[15deg] text-kelasi-red" />
-      <p className="text-[44px]">KELASI</p>
+      KELASI
     </div>
   );
 }

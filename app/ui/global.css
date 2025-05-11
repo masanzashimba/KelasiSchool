@@ -23,3 +23,38 @@ input[type="number"]::-webkit-outer-spin-button {
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+.modal-enter {
+  opacity: 0;
+}
+.modal-enter-active {
+  opacity: 1;
+  transition: opacity 200ms;
+}
+.modal-exit {
+  opacity: 1;
+}
+.modal-exit-active {
+  opacity: 0;
+  transition: opacity 200ms;
+}
+@layer components {
+  .nav-link {
+    @apply text-[16px] font-semibold transition-all duration-300 ease-in-out;
+  }
+
+  .nav-link-active {
+    @apply text-kelasi-red;
+  }
+
+  .nav-link-inactive {
+    @apply text-noir-noir hover:text-kelasi-red/70;
+  }
+
+  .btn-connexion {
+    @apply flex items-center justify-center w-[140px] h-10 rounded-full text-white text-sm font-semibold bg-gradient-to-r from-kelasi-red to-kelasi-orange;
+  }
+
+  .dropdown-item {
+    @apply block px-4 py-2 text-gray-700 hover:bg-gray-100;
+  }
+}

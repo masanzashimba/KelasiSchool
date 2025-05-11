@@ -1,0 +1,239 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+  PARENT
+  ADMIN
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+model User {
+  id           String   @id @default(uuid())
+  lastName     String   @map("last_name")
+  firstName    String   @map("first_name")
+  gender       Gender
+  birthDate    DateTime @map("birth_date")
+  email        String?  @unique
+  phone        String?  @unique
+  username     String?  @unique
+  passwordHash String   @map("password_hash")
+  role         UserRole
+  address      String?
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  taughtClasses  Class[]      @relation("TeacherToClass")
+  taughtSubjects Subject[]    @relation("TeacherToSubject")
+  assignments    Assignment[] @relation("TeacherToAssignment")
+  exams          Exam[]       @relation("TeacherToExam")
+  attendances    Attendance[]
+  enrollments    Enrollment[]
+
+  // Parent-Child relationships
+  children StudentParentRelation[] @relation("ParentToChildren")
+  parents  StudentParentRelation[] @relation("StudentToParents")
+
+  @@index([email])
+  @@index([phone])
+  @@index([username])
+  @@index([role])
+  @@map("users")
+}
+
+model StudentParentRelation {
+  id        String @id @default(uuid())
+  student   User   @relation("StudentToParents", fields: [studentId], references: [id])
+  studentId String @map("student_id")
+  parent    User   @relation("ParentToChildren", fields: [parentId], references: [id])
+  parentId  String @map("parent_id")
+
+  @@unique([studentId, parentId])
+  @@index([parentId])
+  @@index([studentId])
+  @@map("student_parent_relations")
+}
+
+model Class {
+  id           String       @id @default(uuid())
+  name         String
+  gradeLevel   String       @map("grade_level")
+  academicYear String       @map("academic_year")
+  teacher      User         @relation("TeacherToClass", fields: [teacherId], references: [id])
+  teacherId    String       @map("teacher_id")
+  subjects     Subject[]
+  enrollments  Enrollment[]
+  attendances  Attendance[]
+  createdAt    DateTime     @default(now()) @map("created_at")
+
+  @@index([teacherId])
+  @@index([gradeLevel])
+  @@index([academicYear])
+  @@map("classes")
+}
+
+model Subject {
+  id          String       @id @default(uuid())
+  name        String
+  description String?
+  class       Class        @relation(fields: [classId], references: [id])
+  classId     String       @map("class_id")
+  teacher     User         @relation("TeacherToSubject", fields: [teacherId], references: [id])
+  teacherId   String       @map("teacher_id")
+  lessons     Lesson[]
+  assignments Assignment[]
+  exams       Exam[]
+  createdAt   DateTime     @default(now()) @map("created_at")
+
+  @@index([classId])
+  @@index([teacherId])
+  @@index([name])
+  @@map("subjects")
+}
+
+model Enrollment {
+  id         String   @id @default(uuid())
+  class      Class    @relation(fields: [classId], references: [id])
+  classId    String   @map("class_id")
+  student    User     @relation(fields: [studentId], references: [id])
+  studentId  String   @map("student_id")
+  enrolledAt DateTime @default(now()) @map("enrolled_at")
+
+  @@unique([classId, studentId])
+  @@index([studentId])
+  @@index([classId])
+  @@map("enrollments")
+}
+
+model Lesson {
+  id        String   @id @default(uuid())
+  title     String
+  content   String
+  subject   Subject  @relation(fields: [subjectId], references: [id])
+  subjectId String   @map("subject_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@index([subjectId])
+  @@index([title])
+  @@index([content])
+  @@map("lessons")
+}
+
+model Assignment {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  dueDate     DateTime @map("due_date")
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  subjectId   String   @map("subject_id")
+  teacher     User     @relation("TeacherToAssignment", fields: [teacherId], references: [id])
+  teacherId   String   @map("teacher_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([subjectId])
+  @@index([teacherId])
+  @@index([dueDate])
+  @@index([title])
+  @@index([description])
+  @@map("assignments")
+}
+
+model Exam {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  examDate    DateTime @map("exam_date")
+  subject     Subject  @relation(fields: [subjectId], references: [id])
+  subjectId   String   @map("subject_id")
+  teacher     User     @relation("TeacherToExam", fields: [teacherId], references: [id])
+  teacherId   String   @map("teacher_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([subjectId])
+  @@index([teacherId])
+  @@index([examDate])
+  @@index([title])
+  @@index([description])
+  @@map("exams")
+}
+
+model Attendance {
+  id        String           @id @default(uuid())
+  student   User             @relation(fields: [studentId], references: [id])
+  studentId String           @map("student_id")
+  class     Class            @relation(fields: [classId], references: [id])
+  classId   String           @map("class_id")
+  date      DateTime
+  status    AttendanceStatus
+  notes     String?
+  createdAt DateTime         @default(now()) @map("created_at")
+
+  @@index([studentId])
+  @@index([classId])
+  @@index([date])
+  @@index([status])
+  @@map("attendances")
+}
+
+model StudentArchive {
+  id        String   @id @default(uuid())
+  studentId String   @map("student_id")
+  lastName  String   @map("last_name")
+  firstName String   @map("first_name")
+  gender    Gender
+  birthDate DateTime @map("birth_date")
+  email     String?
+  phone     String?
+  username  String?
+  address   String?
+
+  className    String @map("class_name")
+  gradeLevel   String @map("grade_level")
+  academicYear String @map("academic_year")
+
+  teacherLastName  String @map("teacher_last_name")
+  teacherFirstName String @map("teacher_first_name")
+
+  parentsInfo   Json    @map("parents_info")
+  reportCardUrl String  @map("report_card_url")
+  notes         String?
+  metadata      Json?
+
+  archivedAt DateTime @default(now()) @map("archived_at")
+
+  @@index([studentId])
+  @@index([academicYear])
+  @@index([gradeLevel])
+  @@map("student_archives")
+}

@@ -23,13 +23,24 @@ export type Invoice = {
   date: string;
   // In TypeScript, this is called a string union type.
   // It means that the "status" property can only be one of the two strings: 'pending' or 'paid'.
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
 };
 
 export type Revenue = {
   month: string;
   revenue: number;
 };
+export interface LatestLesson {
+  id: string;
+  title: string;
+  createdAt: string | Date;
+  subject?: {
+    name: string;
+  };
+  teacher?: {
+    name: string;
+  };
+}
 
 export type LatestInvoice = {
   id: string;
@@ -40,7 +51,7 @@ export type LatestInvoice = {
 };
 
 // The database returns a number for amount, but we later format it to a string with the formatCurrency function
-export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
+export type LatestInvoiceRaw = Omit<LatestInvoice, "amount"> & {
   amount: number;
 };
 
@@ -52,7 +63,7 @@ export type InvoicesTable = {
   image_url: string;
   date: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
 };
 
 export type CustomersTableType = {
@@ -84,5 +95,54 @@ export type InvoiceForm = {
   id: string;
   customer_id: string;
   amount: number;
-  status: 'pending' | 'paid';
+  status: "pending" | "paid";
+};
+// types/definitions.ts
+export type LessonField = {
+  id: string;
+  title: string;
+};
+
+export type SubjectField = {
+  id: string;
+  name: string;
+};
+
+export interface LessonFormState {
+  errors?: {
+    title?: string[];
+    content?: string[];
+    subjectId?: string[];
+  };
+  message: string | null; // Déclaré comme obligatoire
+  success?: boolean;
+}
+
+export type LessonsTable = {
+  id: string;
+  title: string;
+  content: string;
+  createdAt: Date;
+  subject: {
+    id: string;
+    name: string;
+  };
+};
+
+export type LatestLessonRaw = {
+  id: string;
+  title: string;
+  subject: {
+    name: string;
+  };
+  createdAt: Date;
+};
+export type LessonState = {
+  errors?: {
+    title?: string[];
+    content?: string[];
+    subjectId?: string[];
+  };
+  message: string; // Toujours string, pas null
+  success?: boolean;
 };

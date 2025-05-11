@@ -3,9 +3,9 @@ import {
   ClockIcon,
   UserGroupIcon,
   InboxIcon,
-} from '@heroicons/react/24/outline';
-import { lusitana } from '@/app/ui/fonts';
-
+} from "@heroicons/react/24/outline";
+import { lusitana } from "@/app/ui/fonts";
+import { fetchLatestLessons, fetchDashboardStats } from "@/app/lib/data";
 const iconMap = {
   collected: BanknotesIcon,
   customers: UserGroupIcon,
@@ -14,10 +14,21 @@ const iconMap = {
 };
 
 export default async function CardWrapper() {
+  const latestLessons = await fetchLatestLessons();
+  const { totalLessons, usersByRole } = await fetchDashboardStats();
   return (
     <>
       {/* NOTE: Uncomment this code in Chapter 9 */}
+      <Card title="Total des cours" value={totalLessons} type="lessons" />
 
+      {usersByRole.map((stat) => (
+        <Card
+          key={stat.role}
+          title={`Utilisateurs (${stat.role})`}
+          value={stat._count.role}
+          type={stat.role}
+        />
+      ))}
       {/* <Card title="Collected" value={totalPaidInvoices} type="collected" />
       <Card title="Pending" value={totalPendingInvoices} type="pending" />
       <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
@@ -37,7 +48,7 @@ export function Card({
 }: {
   title: string;
   value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  type: "invoices" | "customers" | "pending" | "collected";
 }) {
   const Icon = iconMap[type];
 
