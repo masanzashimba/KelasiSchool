@@ -2,12 +2,32 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
+// export type User = {
+//   id: string;
+//   name: string;
+//   email: string;
+//   password: string;
+// };
+export type UserState = {
+  errors?: Record<string, string[]>;
+  message: string;
+  success?: boolean;
 };
+import { User } from "@prisma/client";
+
+export type UserForm = Pick<
+  User,
+  | "id"
+  | "lastName"
+  | "firstName"
+  | "gender"
+  | "birthDate"
+  | "email"
+  | "phone"
+  | "username"
+  | "role"
+  | "address"
+>;
 
 export type Customer = {
   id: string;

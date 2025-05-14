@@ -216,3 +216,96 @@ export function InvoicesTableSkeleton() {
     </div>
   );
 }
+
+// import React from 'react';
+
+export function UsersTableSkeleton() {
+  return (
+    <div className="mt-6 flow-root animate-pulse">
+      <div className="inline-block min-w-full align-middle">
+        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
+          {/* Version mobile */}
+          <div className="md:hidden">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div
+                key={index}
+                className="mb-2 w-full rounded-md bg-white p-4 shadow"
+              >
+                <div className="flex items-center justify-between border-b pb-4">
+                  <div>
+                    <div className="h-4 w-24 bg-gray-200 rounded" />
+                    <div className="mt-2 h-5 w-36 bg-gray-300 rounded" />
+                  </div>
+                  <div>
+                    <div className="h-4 w-16 bg-gray-200 rounded" />
+                    <div className="mt-2 h-5 w-24 bg-gray-300 rounded" />
+                  </div>
+                </div>
+                <div className="flex w-full items-center justify-between pt-4">
+                  <div>
+                    <div className="h-4 w-16 bg-gray-200 rounded" />
+                    <div className="mt-2 h-5 w-32 bg-gray-300 rounded" />
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                    <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Version bureau */}
+          <table className="hidden min-w-full text-gray-900 md:table">
+            <thead>
+              <tr>
+                {[
+                  "Nom Complet",
+                  "Email",
+                  "Téléphone",
+                  "Rôle",
+                  "Date de création",
+                  "Actions",
+                ].map((header, i) => (
+                  <th
+                    key={i}
+                    className="px-4 py-5 text-left text-sm font-medium text-gray-500"
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white">
+              {Array.from({ length: 5 }).map((_, index) => (
+                <tr key={index} className="border-b text-sm">
+                  <td className="px-4 py-4">
+                    <div className="h-4 w-32 bg-gray-200 rounded" />
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="h-4 w-40 bg-gray-200 rounded" />
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="h-4 w-28 bg-gray-200 rounded" />
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="h-5 w-20 bg-gray-300 rounded-full" />
+                  </td>
+                  <td className="px-4 py-4">
+                    <div className="h-4 w-24 bg-gray-200 rounded" />
+                  </td>
+                  <td className="px-4 py-4 text-right">
+                    <div className="flex justify-end gap-2">
+                      <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                      <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

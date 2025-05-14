@@ -1,7 +1,6 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import { updateLesson } from "@/app/lib/actions";
 import { LessonState, SubjectField } from "@/app/lib/definitions";
 import {
   BookOpenIcon,
@@ -10,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { Button } from "@/app/ui/button";
+import { updateLesson } from "@/app/lib/actions";
 
 export default function EditForm({
   lesson,

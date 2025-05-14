@@ -7,6 +7,14 @@ import { usePathname } from "next/navigation";
 import KELASI from "@/app/ui/kelasi_logo";
 import { poppins } from "@/app/ui/fonts";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  SignInButton,
+  SignUpButton,
+  UserButton,
+  useUser,
+  SignedIn,
+  SignedOut,
+} from "@clerk/nextjs";
 
 const NAV_ITEMS = [
   { href: "/", label: "Accueil" },
@@ -24,6 +32,7 @@ const SERVICES_ITEMS = [
 ];
 
 export default function Navbar() {
+  const { isSignedIn } = useUser();
   const [isOpen, setIsOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const pathname = usePathname();
@@ -94,11 +103,30 @@ export default function Navbar() {
             </AnimatePresence>
           </div>
         </nav>
+        <div className="hidden md:flex items-center gap-4">
+          <SignedIn>
+            <div className="clerk-user-button">
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "w-10 h-10", // Taille augmentée
+                  },
+                }}
+              />
+            </div>
+          </SignedIn>
 
-        {/* Connexion button */}
-        <Link href="/login" className="hidden md:flex btn-connexion">
-          Se connecter
-        </Link>
+          <SignedOut>
+            <SignUpButton mode="modal">
+              <button className="btn-connexion">S'inscrire</button>
+            </SignUpButton>
+
+            <SignInButton mode="modal">
+              <button className="btn-connexion">Se connecter</button>
+            </SignInButton>
+          </SignedOut>
+        </div>
 
         {/* Mobile Menu Toggle */}
         <button
@@ -141,13 +169,31 @@ export default function Navbar() {
             </Link>
           ))}
         </div>
-        <Link
-          href="/login"
-          className="block text-center bg-gradient-to-r from-[#CA0914] to-[#E94922] text-white py-2 rounded-full font-medium"
-          onClick={() => setIsOpen(false)}
-        >
-          Se connecter
-        </Link>
+
+        <SignedIn>
+          <div className="flex justify-center">
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-10 h-10", // Même taille que desktop
+                },
+              }}
+            />
+          </div>
+        </SignedIn>
+
+        <SignedOut>
+          <SignUpButton mode="modal">
+            <button className="block btn-connexion w-full">S'inscrire</button>
+          </SignUpButton>
+
+          <SignInButton mode="modal">
+            <button className="block btn-connexion w-full mt-2">
+              Se connecter
+            </button>
+          </SignInButton>
+        </SignedOut>
       </div>
     </header>
   );

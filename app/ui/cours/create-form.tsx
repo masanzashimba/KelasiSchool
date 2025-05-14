@@ -9,21 +9,20 @@ import {
 } from "@heroicons/react/24/outline";
 import { Button } from "@/app/ui/button";
 import { useActionState } from "react";
-import { createLesson, State } from "@/app/lib/actions";
-
-const initialState: State = {
-  message: "",
-  errors: undefined,
-};
+import { createLesson } from "@/app/lib/actions";
+// const initialState: State = {
+//   message: "",
+//   errors: undefined,
+// };
 
 export default function Form({ subjects }: { subjects: SubjectField[] }) {
-  const [state, dispatch] = useActionState<State, FormData>(
-    createLesson,
-    initialState
-  ); // Changé ici
+  // const [state, dispatch] = useActionState<State, FormData>(
+  //   createLesson,
+  //   initialState
+  // ); // Changé ici
 
   return (
-    <form action={dispatch}>
+    <form>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
         {/* Titre du cours */}
         <div className="mb-4">

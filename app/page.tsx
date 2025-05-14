@@ -36,7 +36,7 @@ export default function Page() {
           >
             <span>
               Se connecter
-              <UserButton />
+              {/* <UserButton /> */}
             </span>
             <ArrowRightIcon className="w-5 md:w-6" />
           </Link>

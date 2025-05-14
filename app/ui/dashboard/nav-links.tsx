@@ -19,7 +19,7 @@ const links = [
   { name: "Tableau de bord", href: "/dashboard", icon: HomeIcon },
   {
     name: "Personnes",
-    href: "/dashboard/personnes",
+    href: "/dashboard/users",
     icon: UserGroupIcon,
   },
   {

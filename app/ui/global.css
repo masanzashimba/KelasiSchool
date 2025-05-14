@@ -53,8 +53,30 @@ input[type="number"]::-webkit-outer-spin-button {
   .btn-connexion {
     @apply flex items-center justify-center w-[140px] h-10 rounded-full text-white text-sm font-semibold bg-gradient-to-r from-kelasi-red to-kelasi-orange;
   }
+  .btn-deconnexion {
+    @apply flex items-center justify-center w-[140px] h-10 rounded-full text-white text-sm font-semibold bg-gradient-to-r from-noir-noir to-noir-noir;
+  }
 
   .dropdown-item {
     @apply block px-4 py-2 text-gray-700 hover:bg-gray-100;
   }
+}
+.clerk-user-button .cl-avatarBox {
+  width: 2.5rem !important;
+  height: 2.5rem !important;
+}
+
+/* Animation pour les chargements */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
